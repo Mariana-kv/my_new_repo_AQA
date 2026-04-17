@@ -1,0 +1,24 @@
+{
+  "name": "my_new_repo_aqa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mariana-kv/my_new_repo_AQA.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mariana-kv/my_new_repo_AQA/issues"
+  },
+  "homepage": "https://github.com/Mariana-kv/my_new_repo_AQA#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.6.0"
+  }
+}
