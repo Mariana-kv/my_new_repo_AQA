@@ -5,6 +5,9 @@ import { ProductPage } from '../pages/product.page';
 import { CheckoutPage } from '../pages/checkout.page';
 import path from 'path';
 import { Category } from '../enums/category.enum';
+import { BasePage } from '../pages/base.page';
+
+
 
 const authFile = path.join(__dirname, '../playwright/.auth/user.json');
 
@@ -48,11 +51,9 @@ test('Verify user can add product to cart', async({ page}) => {
   await expect(productPage.unitPrice).toContainText('9.17');
 
   await productPage.addToCart.click();
-
-  const alert = page.getByRole('alert');
-  await expect(alert).toBeVisible({ timeout: 10000 });
-  await expect(alert).toContainText('Product added to shopping cart');
-  await expect(alert).toBeHidden( {timeout: 8000} );
+  await expect(productPage.alert).toBeVisible({ timeout: 10000 });
+  await expect(productPage.alert).toContainText('Product added to shopping cart');
+  await expect(productPage.alert).toBeHidden( {timeout: 8000} );
   await expect(page.getByTestId('cart-quantity')).toContainText('1');
 
   await productPage.productCart.click();
@@ -71,9 +72,13 @@ test.describe('Verify user can perform sorting by name (asc & desc)', () => {
 
   for (const { option, order } of cases) {
     test(`Verify sorting by name: ${option}`, async ({ page }) => {
+      const homePage = new HomePage(page);
       await page.goto('/');
 
-      await page.getByTestId('sort').selectOption(option);
+
+      await homePage.sortDropdown.selectOption(option);
+      const firstProductBefore = await page.getByTestId('product-name').first().textContent();
+await expect(page.getByTestId('product-name').first()).not.toHaveText(firstProductBefore ?? '');
 
       const names = await page.getByTestId('product-name').allTextContents();
 
@@ -95,9 +100,10 @@ test.describe('Verify user can perform sorting by price (asc & desc)', () => {
 
   for (const { option, order } of cases) {
     test(`Verify sorting by price: ${option}`, async ({ page }) => {
+      const homePage = new HomePage(page);
       await page.goto('/');
 
-      await page.getByTestId('sort').selectOption(option);
+      await homePage.sortDropdown.selectOption(option);
 
       const priceTexts = await page.getByTestId('product-price').allTextContents();
 
@@ -116,9 +122,9 @@ test('Verify user can filter products by category', async({ page}) => {
   const homePage = new HomePage(page);
   await page.goto('/');
 
-  await homePage.categoryCheckbox(Category.PowerTools, 'Sander').click();
+  await homePage.filterByCategory(Category.PowerTools, 'Sander');
   await expect(page.getByTestId('product-name').filter({ hasText: 'Combination Pliers' })).toHaveCount(0);  
-  const productNames = await page.getByTestId('product-name').allTextContents();
+  const productNames = await homePage.products.allTextContents();
   for (const name of productNames) {
     expect(name).toContain('Sander');
   }

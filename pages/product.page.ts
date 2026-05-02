@@ -1,7 +1,7 @@
 import { Locator, Page } from "@playwright/test";
+import { BasePage } from '../pages/base.page';
 
-export class ProductPage {
-    page: Page;
+export class ProductPage extends BasePage {
     productName: Locator;
     unitPrice: Locator;
     addToCart: Locator;
@@ -10,7 +10,7 @@ export class ProductPage {
 
 
     constructor(page: Page) {
-        this.page = page;
+        super(page);
         this.productName = this.page.getByTestId('product-name');
         this.unitPrice = this.page.getByTestId('unit-price');
         this.addToCart = this.page.getByTestId('add-to-cart');
