@@ -6,17 +6,42 @@ type MyFixtures = {
     loggedInApp: AllPages;
 };
 
+interface LoginResponse {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+}
+
+
 export const test = base.extend<MyFixtures>({
     allPages: async ( {page}, use) => {
         const allPages = new AllPages(page);
         await use(allPages);
     },
-    loggedInApp: async ( {allPages, page}, use) => {
+   /*  loggedInApp: async ( {allPages, page}, use) => {
         await page.goto('/auth/login');
         await allPages.loginPage.performLogin('customer2@practicesoftwaretesting.com', 'welcome01');
         await page.waitForURL('/account');
         await use(allPages);
+    } */ 
+
+    loggedInApp: async ({ allPages, page, request }, use) => {
+        const response = await request.post('https://api.practicesoftwaretesting.com/users/login', {
+            data: {
+                email: 'customer2@practicesoftwaretesting.com',
+                password: 'welcome01'
+            }
+        });
+
+        const body = await response.json() as LoginResponse;
+        await page.addInitScript((token) => {
+            window.localStorage.setItem('auth-token', token);
+        }, body.access_token);
+        console.log(body.access_token);
+        await page.goto('/account');
+        await use(allPages);
     }
+
 });
 
 export { expect } from '@playwright/test';
