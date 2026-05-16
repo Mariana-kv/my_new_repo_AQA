@@ -19,6 +19,8 @@ jobs:
       run: mkdir -p playwright/.auth
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Check site availability
+      run: curl -I https://practicesoftwaretesting.com
     - name: Run Playwright tests
       env:
         BASE_URL: ${{ vars.BASE_URL }}
