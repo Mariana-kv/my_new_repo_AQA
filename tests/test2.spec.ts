@@ -3,7 +3,7 @@ import { Category } from '../enums/category.enum';
 import { test, expect } from '../fixtures/app.fixture';
 
 
-test('Verify user can view product details', async({ allPages, page }) => {
+test('Verify user can view product details',  { tag: '@smoke' }, async({ allPages, page }) => {
 
   await page.goto('/');
   await allPages.homePage.productLink.click();
@@ -16,7 +16,7 @@ test('Verify user can view product details', async({ allPages, page }) => {
 });
 
 
-test.describe('Verify user can perform sorting by name (asc & desc)', () => {
+test.describe('Verify user can perform sorting by name (asc & desc)',  { tag: '@regression' }, () => {
   const cases = [
     { option: 'Name (A - Z)', order: 'asc' },
     { option: 'Name (Z - A)', order: 'desc'},
@@ -43,7 +43,7 @@ await expect(page.getByTestId('product-name').first()).not.toHaveText(firstProdu
   }
 });
 
-test.describe('Verify user can perform sorting by price (asc & desc)', () => {
+test.describe('Verify user can perform sorting by price (asc & desc)',  { tag: '@regression' }, () => {
   const cases = [
     { option: 'Price (Low - High)', order: 'asc' },
     { option: 'Price (High - Low)', order: 'desc' },
@@ -70,7 +70,7 @@ await expect(page.getByTestId('product-price').first()).not.toHaveText(firstProd
   }
 });
 
-test('Verify user can filter products by category', async({ allPages, page}) => {
+test('Verify user can filter products by category',  { tag: '@regression' }, async({ allPages, page}) => {
 
   await page.goto('/');
 
@@ -82,13 +82,13 @@ test('Verify user can filter products by category', async({ allPages, page}) => 
   }
 });
 
-test('Verify user logged with new user data', async({ loggedInApp, page}) => {
+test('Verify user logged with new user data',  { tag: '@smoke' }, async({ loggedInApp, page}) => {
     await page.goto('/account');
     await expect(page).toHaveURL('/account');
     await expect(loggedInApp.accountPage.header.navigationMenu).toContainText(process.env.USER_NAME ?? '');
 })
 
-test('Verify user can confirm purchase', async({ loggedInApp, page}) => {
+test('Verify user can confirm purchase',  { tag: '@smoke' }, async({ loggedInApp, page}) => {
     await page.goto('/');
     const productName = await loggedInApp.homePage.products.first().textContent();
     const productPrice = await page.getByTestId('product-price').first().textContent();

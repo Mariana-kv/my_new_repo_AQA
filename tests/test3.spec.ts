@@ -15,7 +15,7 @@ interface ProductsResponse {
   [key: string]: unknown;
 }
 
-test('Verify mocked data', async ( {page}) => {
+test('Verify mocked data',  { tag: '@smoke' }, async ( {page}) => {
     await page.route('https://api.practicesoftwaretesting.com/products**', async route => {
     const response = await route.fetch();
     const json = await response.json() as ProductsResponse;

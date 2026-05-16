@@ -1,0 +1,34 @@
+name: Regression Tests
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - name: Install dependencies
+      run: npm ci
+    - name: Create auth directory
+      run: mkdir -p playwright/.auth
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+    - name: Run Regression Tests
+      env:
+        BASE_URL: ${{ vars.BASE_URL }}
+        USER_NAME: ${{ vars.USER_NAME }}
+        USER_EMAIL: ${{ secrets.USER_EMAIL }}
+        USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+      run: npx playwright test --grep @regression
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: regression-report
+        path: playwright-report/
+        retention-days: 30

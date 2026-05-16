@@ -15,7 +15,7 @@ const authFile = path.join(__dirname, '../playwright/.auth/user.json');
 
 test.use({storageState: authFile});
 
-test('Verify data on the page', async ({ page }) => {
+test('Verify data on the page', { tag: '@smoke' }, async ({ page }) => {
   const accountPage = new AccountPage(page);
   await page.goto('/account');
 
@@ -25,7 +25,7 @@ test('Verify data on the page', async ({ page }) => {
 
 });
 
-test('Verify user can view product details', async({ page }) => {
+test('Verify user can view product details', { tag: '@smoke' }, async({ page }) => {
   const homePage = new HomePage(page);
   const productPage = new ProductPage(page);
   await page.goto('/');
@@ -38,7 +38,7 @@ test('Verify user can view product details', async({ page }) => {
   await expect(productPage.addToFav).toBeVisible();
 });
 
-test('Verify user can add product to cart', async({ page}) => {
+test('Verify user can add product to cart', { tag: '@smoke' }, async({ page}) => {
   const homePage = new HomePage(page);
   const productPage = new ProductPage(page);
   const checkoutPage = new CheckoutPage(page);
@@ -66,7 +66,7 @@ test('Verify user can add product to cart', async({ page}) => {
 
 });
 
-test.describe('Verify user can perform sorting by name (asc & desc)', () => {
+test.describe('Verify user can perform sorting by name (asc & desc)', { tag: '@regression' }, () => {
   const cases = [
     { option: 'Name (A - Z)', order: 'asc' },
     { option: 'Name (Z - A)', order: 'desc'},
@@ -94,7 +94,7 @@ await expect(page.getByTestId('product-name').first()).not.toHaveText(firstProdu
 });
 
 
-test.describe('Verify user can perform sorting by price (asc & desc)', () => {
+test.describe('Verify user can perform sorting by price (asc & desc)', { tag: '@regression' }, () => {
   const cases = [
     { option: 'Price (Low - High)', order: 'asc' },
     { option: 'Price (High - Low)', order: 'desc' },
@@ -120,7 +120,7 @@ test.describe('Verify user can perform sorting by price (asc & desc)', () => {
   }
 });
 
-test('Verify user can filter products by category', async({ page}) => {
+test('Verify user can filter products by category', { tag: '@regression' }, async({ page}) => {
   const homePage = new HomePage(page);
   await page.goto('/');
 
