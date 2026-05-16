@@ -21,6 +21,8 @@ jobs:
       run: npx playwright install --with-deps
     - name: Check site availability
       run: curl -I https://practicesoftwaretesting.com
+    - name: Check login page
+      run: curl -s -o /dev/null -w "%{http_code}" https://practicesoftwaretesting.com/auth/login
     - name: Run Playwright tests
       env:
         BASE_URL: ${{ vars.BASE_URL }}
