@@ -28,8 +28,8 @@ export const test = base.extend<MyFixtures>({
     loggedInApp: async ({ allPages, page, request }, use) => {
         const response = await request.post('https://api.practicesoftwaretesting.com/users/login', {
             data: {
-                email: 'customer2@practicesoftwaretesting.com',
-                password: 'welcome01'
+                email: process.env.USER_EMAIL,
+                password: process.env.USER_PASSWORD
             }
         });
 
@@ -37,7 +37,6 @@ export const test = base.extend<MyFixtures>({
         await page.addInitScript((token) => {
             window.localStorage.setItem('auth-token', token);
         }, body.access_token);
-        console.log(body.access_token);
         await page.goto('/account');
         await use(allPages);
     }

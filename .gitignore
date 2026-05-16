@@ -145,3 +145,4 @@ vite.config.ts.timestamp-*
 /playwright/.cache/
 /playwright/.auth/
 playwright
+.env

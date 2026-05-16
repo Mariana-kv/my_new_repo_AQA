@@ -6,6 +6,8 @@ import { CheckoutPage } from '../pages/checkout.page';
 import path from 'path';
 import { Category } from '../enums/category.enum';
 import { BasePage } from '../pages/base.page';
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 
@@ -19,7 +21,7 @@ test('Verify data on the page', async ({ page }) => {
 
   await expect(page).toHaveURL('/account');
   await expect(accountPage.pageTitle).toHaveText('My account');
-  await expect(accountPage.header.navigationMenu).toContainText('Jack Howe');
+  await expect(accountPage.header.navigationMenu).toContainText(process.env.USER_NAME ?? '');
 
 });
 

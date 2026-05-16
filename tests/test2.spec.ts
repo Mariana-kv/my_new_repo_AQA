@@ -85,7 +85,7 @@ test('Verify user can filter products by category', async({ allPages, page}) => 
 test('Verify user logged with new user data', async({ loggedInApp, page}) => {
     await page.goto('/account');
     await expect(page).toHaveURL('/account');
-    await expect(loggedInApp.accountPage.header.navigationMenu).toContainText('Jack Howe');
+    await expect(loggedInApp.accountPage.header.navigationMenu).toContainText(process.env.USER_NAME ?? '');
 })
 
 test('Verify user can confirm purchase', async({ loggedInApp, page}) => {
@@ -103,7 +103,7 @@ test('Verify user can confirm purchase', async({ loggedInApp, page}) => {
     await expect(loggedInApp.checkoutPage.productCheckoutPrice).toContainText(productPrice ?? '');
     await expect(loggedInApp.checkoutPage.productCheckoutTotalPrice).toContainText(productPrice ?? '');
     await loggedInApp.checkoutPage.proceedCheckoutBtn.click();
-    await expect(page.getByText('Jack Howe, you are already logged in')).toBeVisible();
+    await expect(page.getByText(`${process.env.USER_NAME ?? ''}, you are already logged in`)).toBeVisible();
     await expect(loggedInApp.checkoutPage.productCheckoutSuccessBtn).toBeVisible();
     await loggedInApp.checkoutPage.productCheckoutSuccessBtn.click();
     await loggedInApp.checkoutPage.countryCheckoutPage.selectOption('Ukraine');
