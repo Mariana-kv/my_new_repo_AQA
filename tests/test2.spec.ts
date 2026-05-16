@@ -107,7 +107,9 @@ test('Verify user can confirm purchase', async({ loggedInApp, page}) => {
     await expect(loggedInApp.checkoutPage.productCheckoutSuccessBtn).toBeVisible();
     await loggedInApp.checkoutPage.productCheckoutSuccessBtn.click();
     await loggedInApp.checkoutPage.countryCheckoutPage.selectOption('Ukraine');
+    await loggedInApp.checkoutPage.postalCodeCheckoutPage.clear();
     await loggedInApp.checkoutPage.postalCodeCheckoutPage.fill('46000');
+    await loggedInApp.checkoutPage.houseNumberCheckoutPage.clear();
     await loggedInApp.checkoutPage.houseNumberCheckoutPage.fill('23');
     await loggedInApp.checkoutPage.addressCheckoutPageProceedBtn.click();
     await loggedInApp.checkoutPage.cardCheckoutPage.selectOption('Credit Card');
