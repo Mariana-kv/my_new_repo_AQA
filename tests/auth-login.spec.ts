@@ -38,10 +38,9 @@ test('Login and save session', async ({ request, page }) => {
   
   const body = await response.json() as LoginResponse;
   await page.goto('/');
-  await page.addInitScript((token) => {
+  await page.evaluate((token) => {
     window.localStorage.setItem('auth-token', token);
   }, body.access_token);
   
-  // 3. зберегти storageState
   await page.context().storageState({ path: authFile });
 });

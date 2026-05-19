@@ -37,7 +37,7 @@ export const test = base.extend<MyFixtures>({
         await page.addInitScript((token) => {
             window.localStorage.setItem('auth-token', token);
         }, body.access_token);
-        await page.goto('/account');
+        await page.goto('/');
         await use(allPages);
     }
 
